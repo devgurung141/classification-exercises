@@ -1,4 +1,4 @@
-# import
+# imports
 import pandas as pd
 import numpy as np
 import os
@@ -13,7 +13,7 @@ from sklearn.impute import SimpleImputer
 
 
 
-# function for iris to  get clean data
+# function takes original data and return cleaned data
 def prep_iris(df):
     df.drop(columns = ['species_id', 'measurement_id'], inplace=True)
     df.rename(columns={'species_name': 'species'}, inplace=True)
@@ -22,23 +22,7 @@ def prep_iris(df):
     return df
 
 
-# function for iris train, val, test
-def iris_train_val_test(iris_df):
-    seed = 42
-    
-    train_iris, test_iris = train_test_split(iris_df, train_size=0.7, random_state=seed, stratify=iris_df['versicolor'])
-
-    train_iris, val_test_iris = train_test_split(iris_df, train_size=0.7, random_state=seed, stratify=iris_df['versicolor'])
-   
-    validate_iris, test_iris = train_test_split(val_test_iris, train_size=0.5, random_state=seed, stratify=val_test_iris['versicolor'])
-
-    
-    return train_iris, validate_iris, test_iris
-
-
-
-
-# function for titanic to  get clean data
+# function takes original data and return cleaned data
 def prep_titanic(df):
     
     df.drop(columns = ['class', 'embarked','deck', 'passenger_id', 'age'], inplace=True )
@@ -52,23 +36,7 @@ def prep_titanic(df):
     return df
 
 
-# function for titanic train, val, test
-def titanic_train_val_test(titanic_df):
-    seed = 42
-    
-    train_titanic, test_titanic = train_test_split(titanic_df, train_size=0.7, random_state=seed, stratify=titanic_df['survived'])
-
-    train_titanic, val_test_titanic = train_test_split(titanic_df, train_size=0.7, random_state=seed, stratify=titanic_df['survived'])
-
-    validate_titanic, test_titanic = train_test_split(val_test_titanic, train_size=0.5, random_state=seed, stratify=val_test_titanic['survived'])
-
-    
-    return train_titanic, validate_titanic, test_titanic
-
-
-
-
-# function for telco to  get clean data
+# function takes original data and return cleaned data
 def prep_telco(df):
     to_drop = ['payment_type_id', 'contract_type_id', 'internet_service_type_id','customer_id' ]   
     df.drop(columns = to_drop, inplace=True)
@@ -81,14 +49,13 @@ def prep_telco(df):
     return df
 
 
-# function for telco train, val, test
-def telco_train_val_test(telco_df):
-    seed = 42
+# function takes cleaned data and return train data, validate data and test data
+def train_validate_test_split(df, target, seed=42):
     
-    train_telco, test_telco = train_test_split(telco_df, train_size=0.5, random_state=seed, stratify=telco_df['churn'])
-
-    train_telco, val_test_telco = train_test_split(telco_df, train_size=0.7, random_state=seed, stratify=telco_df['churn'])
-
-    validate_telco, test_telco = train_test_split(val_test_telco, train_size=0.5, random_state=seed, stratify=val_test_telco['churn'])
-    
-    return train_telco, validate_telco, test_telco
+    train_validate, test = train_test_split(df, test_size=0.2, 
+                                            random_state=seed, 
+                                            stratify=df[target])
+    train, validate = train_test_split(train_validate, test_size=0.3, 
+                                       random_state=seed,
+                                       stratify=train_validate[target])
+    return train, validate, test
