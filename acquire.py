@@ -3,11 +3,16 @@
 import pandas as pd
 import numpy as np
 import os
-from pydataset import data
 from env import get_connection
 
 
 def get_titanic_data():
+    '''
+    This function reads in titanic data from Codeup database using sql querry into a df, 
+    writes data to a csv file if a local file doesn't exist, and return df and if a local file exists
+    return return df
+    '''
+    
     filename = "titanic.csv"
 
     if os.path.isfile(filename):
@@ -29,6 +34,12 @@ querry_iris = """
         """
 
 def get_iris_data():
+    '''
+    This function reads in iris data from Codeup database using sql querry into a df, 
+    writes data to a csv file if a local file doesn't exist, and return df and if a local file exists
+    return return df
+    '''
+    
     filename = "iris.csv"
 
     if os.path.isfile(filename):
@@ -54,6 +65,12 @@ querry_telco = """
 
 
 def get_telco_data():
+    '''
+    This function reads in telco data from Codeup database using sql querry into a df, 
+    writes data to a csv file if a local file doesn't exist, and return df and if a local file exists
+    return return df
+    '''
+    
     filename = "telco.csv"
 
     if os.path.isfile(filename):
